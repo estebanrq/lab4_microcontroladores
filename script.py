@@ -42,12 +42,12 @@ while (1):
     dict["Eje X"] = data[0]
     dict["Eje Y"] = data[1]
     dict["Eje Z"] = data[2]
-    # dict["Voltaje de Bateria"] = data[3]
+    dict["Voltaje de Bateria"] = data[3]
 
-    # if(float( data[3]) < 7):
-    #     dict["Bateria Baja"] = "Si"
-    # else:
-    #     dict["Bateria Baja"] = "No"
+    if(float( data[3]) < 4):
+        dict["Bateria Baja"] = "Si"
+    else:
+        dict["Bateria Baja"] = "No"
     
     output = json.dumps(dict)
     print(output)
