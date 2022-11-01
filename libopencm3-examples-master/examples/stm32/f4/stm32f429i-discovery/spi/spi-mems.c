@@ -123,8 +123,7 @@ int print_decimal(int);
  * Very simple routine to print an integer as a decimal
  * number on the console.
  */
-int
-print_decimal(int num)
+int print_decimal(int num)
 {
 	int		ndx = 0;
 	char	buf[10];
@@ -151,6 +150,38 @@ print_decimal(int num)
 	}
 	return len; /* number of characters printed */
 }
+
+/* Setting up the ADC for voltage reading:
+ * 
+ * 
+ * 
+*/
+static void adc_setup(void)
+{
+	gpio_mode_setup(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, GPIO0);
+	//gpio_mode_setup(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_NONE, GPIO1);
+	adc_power_off(ADC1);
+	adc_disable_scan_mode(ADC1);
+	adc_set_sample_time_on_all_channels(ADC1, ADC_SMPR_SMP_3CYC);
+	adc_power_on(ADC1);
+}
+
+/* Setting up the ADC for voltage reading:
+ * 
+ * 
+ * 
+*/
+static uint16_t read_adc_naiive(uint8_t channel)
+{
+	uint8_t channel_array[16];
+	channel_array[0] = channel;
+	adc_set_regular_sequence(ADC1, 1, channel_array);
+	adc_start_conversion_regular(ADC1);
+	while (!adc_eoc(ADC1));
+	uint16_t reg16 = adc_read_regular(ADC1);
+	return reg16;
+}
+
 
 char *axes[] = { "X: ", "Y: ", "Z: " };
 
@@ -194,8 +225,8 @@ int main(void)
 
 	clock_setup();
 	console_setup(115200);
-
 	spi_setup();
+	adc_setup();
 
     gpio_clear(GPIOC, GPIO1);
 	spi_send(SPI5, GYR_CTRL_REG1); 
@@ -332,14 +363,20 @@ int main(void)
         gyr_y = gyr_y*L3GD20_SENSITIVITY_500DPS;
         gyr_z = gyr_z*L3GD20_SENSITIVITY_500DPS;
 
-	    print_decimal(gyr_x); console_puts("\t");
+	    uint16_t voltage = read_adc_naiive(0);
+		
+		print_decimal(gyr_x); console_puts("\t");
         print_decimal(gyr_y); console_puts("\t");
-        print_decimal(gyr_z); console_puts("\n");
+        print_decimal(gyr_z); console_puts("\t");
+		print_decimal(voltage); console_puts("\n");
+
+		
 
 		int i;
 		for (i = 0; i < 80000; i++)    /* Wait a bit. */
 			__asm__("nop");
 	}
+
 
 	return 0;
 }
