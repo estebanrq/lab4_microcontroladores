@@ -23,6 +23,8 @@
 
 #include <stdint.h>
 #include <math.h>
+//#include <libopencm3/cm3/nvic.h>
+#include <libopencm3/stm32/adc.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/spi.h>
@@ -364,7 +366,7 @@ int main(void)
         gyr_z = gyr_z*L3GD20_SENSITIVITY_500DPS;
 
 	    uint16_t voltage = read_adc_naiive(0);
-		
+
 		print_decimal(gyr_x); console_puts("\t");
         print_decimal(gyr_y); console_puts("\t");
         print_decimal(gyr_z); console_puts("\t");
