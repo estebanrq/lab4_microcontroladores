@@ -9,4 +9,6 @@ echo "  > make clean"
 make clean
 echo "  > make"
 make
+echo "  > Generating spi-mems.bin"
+arm-none-eabi-objcopy -O binary spi-mems.elf spi-mems.bin
 cd ..
