@@ -271,6 +271,7 @@ int main(void)
         int16_t gyr_x;
         int16_t gyr_y;
         int16_t gyr_z;
+	    int16_t voltage = read_adc_naiive(0);
 		char int_to_str[7];
 		char lcd_gyr[3];
 
@@ -294,6 +295,14 @@ int main(void)
 		strcat(lcd_gyr, int_to_str);
 
 		gfx_setCursor(15, 144);
+		gfx_puts(lcd_gyr);
+
+		//bateria
+		sprintf(lcd_gyr, "%s", "Bateria:");
+		sprintf(int_to_str, "%d", voltage);
+		strcat(lcd_gyr, int_to_str);
+
+		gfx_setCursor(15, 198);
 		gfx_puts(lcd_gyr);
 	
 		lcd_show_frame();
@@ -365,7 +374,6 @@ int main(void)
         gyr_y = gyr_y*L3GD20_SENSITIVITY_500DPS;
         gyr_z = gyr_z*L3GD20_SENSITIVITY_500DPS;
 
-	    uint16_t voltage = read_adc_naiive(0);
 
 		print_decimal(gyr_x); console_puts("\t");
         print_decimal(gyr_y); console_puts("\t");
