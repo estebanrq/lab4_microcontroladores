@@ -3,6 +3,10 @@
         "rcc.h": "c",
         "gpio.h": "c",
         "spi.h": "c",
-        "usart.h": "c"
+        "usart.h": "c",
+        "cstdio": "c",
+        "*.tcc": "c",
+        "stdio.h": "c",
+        "clock.h": "c"
     }
 }
