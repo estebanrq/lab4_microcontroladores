@@ -32,6 +32,8 @@
 #include "lcd-spi.h"
 #include "gfx.h"
 #include <libopencm3/stm32/usart.h> 
+#include <stdio.h>
+#include <string.h>
 
 /* Convert degrees to radians */
 #define d2r(d) ((d) * 6.2831853 / 360.0)
@@ -68,33 +70,6 @@ void spi_setup(void)
 	spi_enable(SPI5);
 }
 
-static void my_usart_print_int(uint32_t usart, int32_t value)
-{
-	int8_t i;
-	int8_t nr_digits = 0;
-	char buffer[25];
-
-	if (value < 0) {
-		usart_send_blocking(usart, '-');
-		value = value * -1;
-	}
-
-	if (value == 0) {
-		usart_send_blocking(usart, '0');
-	}
-
-	while (value > 0) {
-		buffer[nr_digits++] = "0123456789"[value % 10];
-		value /= 10;
-	}
-
-	for (i = nr_digits-1; i >= 0; i--) {
-		usart_send_blocking(usart, buffer[i]);
-	}
-
-	usart_send_blocking(usart, '\r');
-	usart_send_blocking(usart, '\n');
-}
 
 /*
  * Chart of the various SPI ports (1 - 6) and where their pins can be:
@@ -189,9 +164,6 @@ char *axes[] = { "X: ", "Y: ", "Z: " };
  */
 int main(void)
 {
-	int16_t vecs[3];
-	int p1, p2, p3;
-
 	clock_setup();
 	console_setup(115200);
 
@@ -228,16 +200,13 @@ int main(void)
 /*	(void) console_getc(1); */
 	gfx_setTextColor(LCD_YELLOW, LCD_BLACK);
 	gfx_setTextSize(3);
-	p1 = 0;
-	p2 = 45;
-	p3 = 90;
     
 	while (1) {
-        uint8_t temp;
-        uint8_t who;
-        int16_t gyr_x;
-        int16_t gyr_y;
-        int16_t gyr_z;
+		//uint8_t temp = 0;
+        //uint8_t who = 0;
+        int16_t gyr_x = 0;
+        int16_t gyr_y = 0;
+        int16_t gyr_z = 0;
 		char int_to_str[7];
 		char lcd_gyr[3];
 
@@ -269,21 +238,21 @@ int main(void)
 		spi_send(SPI5, GYR_WHO_AM_I | 0x80);
 		spi_read(SPI5); 
 		spi_send(SPI5, 0);    
-		who=spi_read(SPI5);
+		//who=spi_read(SPI5);
 		gpio_set(GPIOC, GPIO1);
 
 		gpio_clear(GPIOC, GPIO1);
 		spi_send(SPI5, GYR_STATUS_REG | GYR_RNW);
 		spi_read(SPI5);
 		spi_send(SPI5, 0);
-		temp=spi_read(SPI5);
+		//temp=spi_read(SPI5);
 		gpio_set(GPIOC, GPIO1);
 
 		gpio_clear(GPIOC, GPIO1);
 		spi_send(SPI5, GYR_OUT_TEMP | GYR_RNW);
 		spi_read(SPI5);
 		spi_send(SPI5, 0);
-		temp=spi_read(SPI5);
+		//temp=spi_read(SPI5);
 		gpio_set(GPIOC, GPIO1);  
 
 		gpio_clear(GPIOC, GPIO1);

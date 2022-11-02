@@ -34,4 +34,10 @@ spi-mems.o: spi-mems.c /usr/lib/gcc/arm-none-eabi/9.2.1/include/stdint.h \
  ../../../../../libopencm3//include/libopencm3/stm32/f4/usart.h \
  ../../../../../libopencm3//include/libopencm3/stm32/common/usart_common_f24.h \
  ../../../../../libopencm3//include/libopencm3/stm32/common/usart_common_f124.h \
- ../../../../../libopencm3//include/libopencm3/stm32/common/usart_common_all.h
+ ../../../../../libopencm3//include/libopencm3/stm32/common/usart_common_all.h \
+ /usr/include/newlib/stdio.h \
+ /usr/lib/gcc/arm-none-eabi/9.2.1/include/stdarg.h \
+ /usr/include/newlib/sys/types.h /usr/include/newlib/sys/_stdint.h \
+ /usr/include/newlib/sys/_pthreadtypes.h \
+ /usr/include/newlib/machine/types.h /usr/include/newlib/sys/stdio.h \
+ /usr/include/newlib/string.h /usr/include/newlib/sys/string.h
