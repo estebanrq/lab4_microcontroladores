@@ -5,7 +5,7 @@ Este repositorio contiene el código necesario para la ejecición del laboratori
 #### 1. Prepare el area ejecutando el siguiente comando en terminal:
         source setup.csh
 #### 2. Conecte la tarjeta STM
-#### 3. Entre a la carpeta spi/ y ejecute el comando:
+#### 3. Entre a la carpeta src/ y ejecute el comando:
         make flash
 #### 4. lance es script de python para IoT usando:
         python3 script.py
